@@ -3,7 +3,9 @@
 # the full copyright notices and license terms.
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
+from trytond.model.exceptions import ValidationError
 from trytond.pyson import Eval, Id
+from trytond.i18n import gettext
 
 
 class FiscalYear(metaclass=PoolMeta):
@@ -11,30 +13,17 @@ class FiscalYear(metaclass=PoolMeta):
     __name__ = 'account.fiscalyear'
 
     post_summary_move_sequence = fields.Many2One(
-        'ir.sequence', 'Post Summary Move Sequence', required=True,
-        domain=[('code', '=', 'account.move'),
-                ['OR',
-                    ('company', '=', Eval('company')),
-                    ('company', '=', None)
-                ]],
-        context={
-            'code': 'account.move',
-            'company': Eval('company'),
-        },
+        'ir.sequence', "Post Summary Move Sequence", required=True,
+        domain=[
+            ('sequence_type', '=',
+                Id('account', 'sequence_type_account_move')),
+            ('company', '=', Eval('company')),
+            ],
         depends=['company'])
 
 
 class Period(metaclass=PoolMeta):
     __name__ = 'account.period'
-
-    @classmethod
-    def __setup__(cls):
-        super().__setup__()
-        cls._error_messages.update({
-            'msg_change_period_post_move_sequence':
-                'You cannot change the post summary move sequence in period '
-                '"%(period)s" because it has posted moves.',
-            })
 
     post_summary_move_sequence = fields.Many2One('ir.sequence',
         'Post Summary Move Sequence',
@@ -75,10 +64,10 @@ class Period(metaclass=PoolMeta):
                                     ('period', '=', period.id),
                                     ('state', '=', 'posted'),
                                     ]):
-                            cls.raise_user_error(
-                                    'msg_change_period_post_move_sequence', {
-                                    'period': period.rec_name,
-                                })
+                            raise ValidationError(
+                                gettext('account_move_summary'
+                                    '.msg_change_period_post_move_sequence',
+                                    period=period.rec_name))
             args.extend((periods, values))
         super(Period, cls).write(*args)
 

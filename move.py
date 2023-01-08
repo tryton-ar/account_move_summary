@@ -8,7 +8,9 @@ from operator import itemgetter
 from sql.aggregate import Sum
 from sql.functions import CharLength
 
+from trytond.i18n import gettext
 from trytond.model import ModelView, ModelSQL, Workflow, fields
+from trytond.model.exceptions import AccessError
 from trytond.wizard import Wizard, StateView, StateAction, Button
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import PYSONEncoder, Eval, Bool, If
@@ -72,11 +74,6 @@ class Summary(Workflow, ModelSQL, ModelView):
                 'invisible': Eval('state') != 'calculated',
                 'depends': ['state'],
                 },
-            })
-        cls._error_messages.update({
-            'msg_delete_posted_summary':
-                'Summary "%(summary)s" in calculated or posted state '
-                'can not be deleted.',
             })
 
     @staticmethod
@@ -185,11 +182,7 @@ class Summary(Workflow, ModelSQL, ModelView):
                 description = None
                 origin_name = None
                 if 'model' in values:
-                    model = Model.search([
-                        ('model', '=', values['model']),
-                        ])
-                    if model:
-                        origin_name = model[0].name
+                    origin_name = Model.get_name(values['model'])
                     description = '%s - %s' % (
                         origin_name, values['journal'].name)
                 elif 'description' in values:
@@ -224,9 +217,9 @@ class Summary(Workflow, ModelSQL, ModelView):
     def delete(cls, summaries):
         for summary in summaries:
             if summary.state in ['calculated', 'posted']:
-                cls.raise_user_error('msg_delete_posted_summary', {
-                        'summary': summary.rec_name,
-                        })
+                raise AccessError(
+                    gettext('account_move_summary.msg_delete_posted_summary',
+                        summary=summary.rec_name))
         super(Summary, cls).delete(summaries)
 
 
@@ -316,17 +309,25 @@ class SummaryMove(ModelSQL, ModelView):
     @classmethod
     def create(cls, vlist):
         pool = Pool()
-        Sequence = pool.get('ir.sequence')
         Journal = pool.get('account.journal')
+        context = Transaction().context
 
+        journals = {}
+        default_company = cls.default_company()
         vlist = [x.copy() for x in vlist]
         for vals in vlist:
             if not vals.get('number'):
-                journal_id = (vals.get('journal')
-                        or Transaction().context.get('journal'))
+                journal_id = vals.get('journal', context.get('journal'))
+                company_id = vals.get('company', default_company)
                 if journal_id:
-                    journal = Journal(journal_id)
-                    vals['number'] = Sequence.get_id(journal.sequence.id)
+                    if journal_id not in journals:
+                        journal = journals[journal_id] = Journal(journal_id)
+                    else:
+                        journal = journals[journal_id]
+                    sequence = journal.get_multivalue(
+                        'sequence', company=company_id)
+                    if sequence:
+                        vals['number'] = sequence.get()
 
         moves = super(SummaryMove, cls).create(vlist)
         cls.validate_move(moves)
@@ -392,15 +393,12 @@ class SummaryMove(ModelSQL, ModelView):
 
     @classmethod
     def post(cls, moves):
-        pool = Pool()
-        Sequence = pool.get('ir.sequence')
-
         for move in moves:
             move.state = 'posted'
             if not move.post_number:
                 move.post_date = move.date
-                move.post_number = Sequence.get_id(
-                    move.period.post_summary_move_sequence_used.id)
+                move.post_number = \
+                    move.period.post_summary_move_sequence_used.get()
         cls.save(moves)
 
 
@@ -422,6 +420,15 @@ class SummaryLine(ModelSQL, ModelView):
         domain=[
             ('company', '=', Eval('company', -1)),
             ('type', '!=', None),
+            ('closed', '!=', True),
+            ['OR',
+                ('start_date', '=', None),
+                ('start_date', '<=', Eval('date', None)),
+                ],
+            ['OR',
+                ('end_date', '=', None),
+                ('end_date', '>=', Eval('date', None)),
+                ],
             ],
         context={
             'company': Eval('company', -1),
@@ -653,14 +660,6 @@ class RenumberSummaryMoves(Wizard):
             ])
     renumber = StateAction('account_move_summary.act_summary_move_form')
 
-    @classmethod
-    def __setup__(cls):
-        super().__setup__()
-        cls._error_messages.update({
-            'draft_moves_in_fiscalyear':
-                'There are Draft Moves in Fiscal Year "%(fiscalyear)s".',
-            })
-
     def do_renumber(self, action):
         pool = Pool()
         SummaryMove = pool.get('account.summary.move')
@@ -673,9 +672,10 @@ class RenumberSummaryMoves(Wizard):
         if draft_moves:
             key = 'move_renumber_draft_moves%s' % self.start.fiscalyear.id
             if Warning.check(key):
-                self.raise_user_error('draft_moves_in_fiscalyear', {
-                        'fiscalyear': self.start.fiscalyear.rec_name,
-                        })
+                raise UserWarning(key,
+                    gettext(
+                        'account_move_summary.draft_moves_in_fiscalyear',
+                        fiscalyear=self.start.fiscalyear.rec_name))
 
         sequences = set([self.start.fiscalyear.post_summary_move_sequence])
         for period in self.start.fiscalyear.periods:
@@ -700,20 +700,20 @@ class RenumberSummaryMoves(Wizard):
                 number_next_old = \
                     move.period.post_summary_move_sequence_used.number_next
                 Sequence.write(list(sequences), {
-                        'number_next': 1,
-                        })
+                    'number_next': 1,
+                    })
                 move_vals.extend(([move], {
-                        'post_number': Sequence.get_id(
-                            move.period.post_summary_move_sequence_used.id),
-                        }))
+                    'post_number':
+                        move.period.post_summary_move_sequence_used.get(),
+                    }))
                 Sequence.write(list(sequences), {
-                        'number_next': number_next_old,
-                        })
+                    'number_next': number_next_old,
+                    })
                 continue
             move_vals.extend(([move], {
-                        'post_number': Sequence.get_id(
-                            move.period.post_summary_move_sequence_used.id),
-                        }))
+                'post_number': (
+                    move.period.post_summary_move_sequence_used.get()),
+                }))
         SummaryMove.write(*move_vals)
 
         action['pyson_domain'] = PYSONEncoder().encode([
@@ -730,13 +730,12 @@ class SummaryGeneralJournal(Report):
     __name__ = 'account.summary.move.general_journal'
 
     @classmethod
-    def get_context(cls, records, data):
+    def get_context(cls, records, header, data):
         pool = Pool()
         Company = pool.get('company.company')
         records = sorted(records, key=lambda i: (i.post_number, i.date))
         context = Transaction().context
-        report_context = super(SummaryGeneralJournal, cls).get_context(
-            records, data)
+        report_context = super().get_context(records, header, data)
         report_context['company'] = Company(context['company'])
         report_context['get_total_move'] = cls.get_total_move
         return report_context
