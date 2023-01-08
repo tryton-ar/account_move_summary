@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<form>
+    <label name="company"/>
+    <field name="company"/>
+    <label name="period"/>
+    <field name="period"/>
+    <label name="move"/>
+    <field name="move"/>
+    <label name="account"/>
+    <field name="account"/>
+    <newline/>
+
+    <label name="debit"/>
+    <field name="debit"/>
+    <label name="credit"/>
+    <field name="credit"/>
+    <label name="description"/>
+    <field name="description" colspan="3"/>
+    <notebook colspan="4">
+        <page string="Other Info" id="info">
+            <label name="date"/>
+            <field name="date"/>
+            <label name="amount_second_currency"/>
+            <field name="amount_second_currency"/>
+            <label name="second_currency"/>
+            <field name="second_currency"/>
+        </page>
+    </notebook>
+    <label name="move_state"/>
+    <field name="move_state"/>
+    <label name="state"/>
+    <field name="state"/>
+</form>

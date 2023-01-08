@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<form col="2">
+    <label id="advice" colspan="2" xalign="0.5"
+        string="This process will take a few minutes. Please, ensure that nobody create or confirm moves for selected fiscal year."/>
+    <label name="fiscalyear"/>
+    <field name="fiscalyear"/>
+    <label name="first_move"/>
+    <field name="first_move"/>
+    <label name="first_number"/>
+    <field name="first_number"/>
+</form>

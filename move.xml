@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<tryton>
+    <data>
+
+        <!-- Moves -->
+        <record model="ir.ui.view" id="move_view_form">
+            <field name="model">account.move</field>
+            <field name="inherit" ref="account.move_view_form"/>
+            <field name="name">move_form</field>
+        </record>
+        <record model="ir.ui.view" id="move_view_tree">
+            <field name="model">account.move</field>
+            <field name="inherit" ref="account.move_view_tree"/>
+            <field name="name">move_tree</field>
+        </record>
+
+        <!-- Summary Moves -->
+        <record model="ir.ui.view" id="summary_move_view_form">
+            <field name="model">account.summary.move</field>
+            <field name="type">form</field>
+            <field name="name">summary_move_form</field>
+        </record>
+        <record model="ir.ui.view" id="summary_move_view_tree">
+            <field name="model">account.summary.move</field>
+            <field name="type">tree</field>
+            <field name="name">summary_move_tree</field>
+        </record>
+        <record model="ir.action.act_window" id="act_summary_move_form">
+            <field name="name">Summary Moves</field>
+            <field name="res_model">account.summary.move</field>
+            <field name="domain"
+                eval="[('company', '=', Eval('context', {}).get('company', -1))]"
+                pyson="1"/>
+            <field name="search_value"
+                eval="[('create_date', '>=', DateTime(hour=0, minute=0, second=0, microsecond=0, delta_years=-1))]"
+                pyson="1"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_summary_move_form_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="summary_move_view_tree"/>
+            <field name="act_window" ref="act_summary_move_form"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_summary_move_form_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="summary_move_view_form"/>
+            <field name="act_window" ref="act_summary_move_form"/>
+        </record>
+        <menuitem
+            parent="account.menu_entries" action="act_summary_move_form"
+            sequence="60" id="menu_summary_move_form"/>
+
+        <!-- Summary Lines -->
+        <record model="ir.ui.view" id="summary_move_line_view_form">
+            <field name="model">account.summary.move.line</field>
+            <field name="type">form</field>
+            <field name="name">summary_move_line_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="summary_move_line_view_tree">
+            <field name="model">account.summary.move.line</field>
+            <field name="type">tree</field>
+            <field name="name">summary_move_line_tree</field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_summary_move_line_form">
+            <field name="name">Summary Move Lines</field>
+            <field name="res_model">account.summary.move.line</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_summary_move_line_form_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="summary_move_line_view_tree"/>
+            <field name="act_window" ref="act_summary_move_line_form"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_summary_move_line_form_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="summary_move_line_view_form"/>
+            <field name="act_window" ref="act_summary_move_line_form"/>
+        </record>
+
+        <!-- Relate summary move to account moves -->
+        <record model="ir.action.act_window" id="act_account_move_form">
+            <field name="name">Summarized Moves</field>
+            <field name="res_model">account.move</field>
+            <field name="domain"
+                eval="[If(Eval('active_ids', []) == [Eval('active_id')], ('summary_move', '=', Eval('active_id')), ('summary_move', 'in', Eval('active_ids')))]"
+                pyson="1"/>
+        </record>
+        <record model="ir.action.keyword"
+                id="act_open_account_move_keyword1">
+            <field name="keyword">form_relate</field>
+            <field name="model">account.summary.move,-1</field>
+            <field name="action" ref="act_account_move_form"/>
+        </record>
+        <record model="ir.action-res.group"
+            id="act_account_move_form-group_account">
+            <field name="action" ref="act_account_move_form"/>
+            <field name="group" ref="account.group_account"/>
+        </record>
+
+        <!-- Summaries -->
+        <record model="ir.ui.view" id="summary_view_form">
+            <field name="model">account.summary</field>
+            <field name="type">form</field>
+            <field name="name">summary_form</field>
+        </record>
+        <record model="ir.ui.view" id="summary_view_tree">
+            <field name="model">account.summary</field>
+            <field name="type">tree</field>
+            <field name="name">summary_tree</field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_summary">
+            <field name="name">Summarize Moves</field>
+            <field name="res_model">account.summary</field>
+            <field name="domain"
+                eval="[('company', '=', Eval('context', {}).get('company', -1))]"
+                pyson="1"/>
+        </record>
+        <record model="ir.action.act_window.view"
+            id="act_summary_view_tree">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="summary_view_tree"/>
+            <field name="act_window" ref="act_summary"/>
+        </record>
+        <record model="ir.action.act_window.view"
+            id="act_summary_view_form">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="summary_view_form"/>
+            <field name="act_window" ref="act_summary"/>
+        </record>
+
+        <menuitem action="act_summary"
+            id="menu_act_summary"
+            parent="account.menu_processing" sequence="20"/>
+
+        <record model="ir.model.button" id="summary_draft_button">
+            <field name="name">draft</field>
+            <field name="string">Draft</field>
+            <field name="model"
+                search="[('model', '=', 'account.summary')]"/>
+        </record>
+        <record model="ir.model.button" id="summary_compute_button">
+            <field name="name">compute</field>
+            <field name="string">Compute</field>
+            <field name="model"
+                search="[('model', '=', 'account.summary')]"/>
+        </record>
+        <record model="ir.model.button" id="summary_post_button">
+            <field name="name">post</field>
+            <field name="string">Post</field>
+            <field name="model"
+                search="[('model', '=', 'account.summary')]"/>
+        </record>
+
+        <!-- Relate summary to summary moves -->
+        <record model="ir.action.act_window" id="act_account_summary_move_form">
+            <field name="name">Summary Moves</field>
+            <field name="res_model">account.summary.move</field>
+            <field name="domain"
+                eval="[If(Eval('active_ids', []) == [Eval('active_id')], ('summary', '=', Eval('active_id')), ('summary', 'in', Eval('active_ids')))]"
+                pyson="1"/>
+        </record>
+        <record model="ir.action.keyword"
+                id="act_open_account_summary_move_keyword1">
+            <field name="keyword">form_relate</field>
+            <field name="model">account.summary,-1</field>
+            <field name="action" ref="act_account_summary_move_form"/>
+        </record>
+        <record model="ir.action-res.group"
+            id="act_account_summary_move_form-group_account">
+            <field name="action" ref="act_account_summary_move_form"/>
+            <field name="group" ref="account.group_account"/>
+        </record>
+
+        <!-- Summary moves access -->
+        <record model="ir.model.access" id="access_summary_move">
+            <field name="model" search="[('model', '=', 'account.summary.move')]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <!-- Renumber wizard -->
+        <record model="ir.ui.view" id="summary_move_renumber_start_view_form">
+            <field name="model">account.summary.move.renumber.start</field>
+            <field name="type">form</field>
+            <field name="name">summary_move_renumber_start_form</field>
+        </record>
+
+        <record model="ir.action.wizard" id="wizard_summary_move_renumber">
+            <field name="name">Renumber Summary Moves</field>
+            <field name="wiz_name">account.summary.move.renumber</field>
+        </record>
+
+        <menuitem action="wizard_summary_move_renumber" id="menu_summary_move_renumber"
+            parent="account.menu_processing" sequence="29"/>
+
+        <!-- General Journal report -->
+        <record model="ir.action.report" id="report_summary_general_journal">
+            <field name="name">General Journal</field>
+            <field name="model">account.summary.move</field>
+            <field name="report_name">account.summary.move.general_journal</field>
+            <field name="report">account_move_summary/general_journal.fodt</field>
+        </record>
+        <record model="ir.action.keyword" id="report_general_journal_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">account.summary.move,-1</field>
+            <field name="action" ref="report_summary_general_journal"/>
+        </record>
+
+    </data>
+</tryton>

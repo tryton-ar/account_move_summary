@@ -1,0 +1,389 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:account.fiscalyear,post_summary_move_sequence:"
+msgid "Post Summary Move Sequence"
+msgstr "Secuencia de asientos resumidos"
+
+msgctxt "field:account.move,summary_move:"
+msgid "Summary Move"
+msgstr "Asiento resumido"
+
+msgctxt "field:account.period,post_summary_move_sequence:"
+msgid "Post Summary Move Sequence"
+msgstr "Secuencia de asientos resumidos"
+
+msgctxt "field:account.summary,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.summary,date:"
+msgid "Date"
+msgstr "Fecha"
+
+msgctxt "field:account.summary,name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:account.summary,periods:"
+msgid "Periods"
+msgstr "Períodos"
+
+msgctxt "field:account.summary,state:"
+msgid "State"
+msgstr "Estado"
+
+msgctxt "field:account.summary.move,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.summary.move,date:"
+msgid "Effective Date"
+msgstr "Fecha efectiva"
+
+msgctxt "field:account.summary.move,description:"
+msgid "Description"
+msgstr "Descripción"
+
+msgctxt "field:account.summary.move,journal:"
+msgid "Journal"
+msgstr "Diario"
+
+msgctxt "field:account.summary.move,lines:"
+msgid "Lines"
+msgstr "Líneas"
+
+msgctxt "field:account.summary.move,number:"
+msgid "Number"
+msgstr "Número"
+
+msgctxt "field:account.summary.move,period:"
+msgid "Period"
+msgstr "Período"
+
+msgctxt "field:account.summary.move,post_date:"
+msgid "Post Date"
+msgstr "Fecha contabilización"
+
+msgctxt "field:account.summary.move,post_number:"
+msgid "Post Number"
+msgstr "Número contabilización"
+
+msgctxt "field:account.summary.move,state:"
+msgid "State"
+msgstr "Estado"
+
+msgctxt "field:account.summary.move,summary:"
+msgid "Summary"
+msgstr "Resumen"
+
+msgctxt "field:account.summary.move.line,account:"
+msgid "Account"
+msgstr "Cuenta"
+
+msgctxt "field:account.summary.move.line,amount:"
+msgid "Amount"
+msgstr "Importe"
+
+msgctxt "field:account.summary.move.line,amount_currency:"
+msgid "Amount Currency"
+msgstr "Moneda del importe"
+
+msgctxt "field:account.summary.move.line,amount_currency_digits:"
+msgid "Amount Currency Digits"
+msgstr "Decimales de la moneda del importe"
+
+msgctxt "field:account.summary.move.line,amount_second_currency:"
+msgid "Amount Second Currency"
+msgstr "Importe segunda moneda"
+
+msgctxt "field:account.summary.move.line,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.summary.move.line,credit:"
+msgid "Credit"
+msgstr "Haber"
+
+msgctxt "field:account.summary.move.line,currency:"
+msgid "Currency"
+msgstr "Moneda"
+
+msgctxt "field:account.summary.move.line,currency_digits:"
+msgid "Currency Digits"
+msgstr "Decimales de la moneda"
+
+msgctxt "field:account.summary.move.line,date:"
+msgid "Effective Date"
+msgstr "Fecha efectiva"
+
+msgctxt "field:account.summary.move.line,debit:"
+msgid "Debit"
+msgstr "Débito"
+
+msgctxt "field:account.summary.move.line,description:"
+msgid "Description"
+msgstr "Descripción"
+
+msgctxt "field:account.summary.move.line,move:"
+msgid "Move"
+msgstr "Asiento"
+
+msgctxt "field:account.summary.move.line,move_description:"
+msgid "Move Description"
+msgstr "Descripción asiento"
+
+msgctxt "field:account.summary.move.line,move_state:"
+msgid "Move State"
+msgstr "Estado asiento"
+
+msgctxt "field:account.summary.move.line,period:"
+msgid "Period"
+msgstr "Período"
+
+msgctxt "field:account.summary.move.line,second_currency:"
+msgid "Second Currency"
+msgstr "Segunda moneda"
+
+msgctxt "field:account.summary.move.line,second_currency_digits:"
+msgid "Second Currency Digits"
+msgstr "Decimales de la segunda moneda"
+
+msgctxt "field:account.summary.move.line,second_currency_required:"
+msgid "Second Currency Required"
+msgstr "Segunda moneda obligatoria"
+
+msgctxt "field:account.summary.move.line,state:"
+msgid "State"
+msgstr "Estado"
+
+msgctxt "field:account.summary.period,period:"
+msgid "Period"
+msgstr "Período"
+
+msgctxt "field:account.summary.period,summary:"
+msgid "Summary"
+msgstr "Resumen"
+
+msgctxt "field:account.summary.move.renumber.start,first_move:"
+msgid "First Move"
+msgstr "Primer asiento"
+
+msgctxt "field:account.summary.move.renumber.start,first_number:"
+msgid "First Number"
+msgstr "Primer número"
+
+msgctxt "field:account.summary.move.renumber.start,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "Ejercicio fiscal"
+
+msgctxt "help:account.move,summary_move:"
+msgid "The related summarized move."
+msgstr "Asiento resumido relacionado"
+
+msgctxt "help:account.summary.move,post_number:"
+msgid "Also known as Folio Number."
+msgstr "También conocido como número de folio."
+
+msgctxt "help:account.summary.move.line,amount_second_currency:"
+msgid "The amount expressed in a second currency."
+msgstr "Importe expresado en una segunda moneda."
+
+msgctxt "help:account.summary.move.line,second_currency:"
+msgid "The second currency."
+msgstr "La segunda moneda."
+
+msgctxt "model:account.summary,name:"
+msgid "Summary"
+msgstr "Resumen"
+
+msgctxt "model:account.summary.move,name:"
+msgid "Summary Move"
+msgstr "Asiento resumido"
+
+msgctxt "model:account.summary.move.line,name:"
+msgid "Summary Move Line"
+msgstr "Línea de asiento resumido"
+
+msgctxt "model:account.summary.period,name:"
+msgid "Summary - Period"
+msgstr "Resumen - Período"
+
+msgctxt "model:ir.action,name:act_account_move_form"
+msgid "Summarized Moves"
+msgstr "Asientos contables de origen"
+
+msgctxt "model:ir.action,name:act_account_summary_move_form"
+msgid "Summary Moves"
+msgstr "Asientos contables resumidos"
+
+msgctxt "model:ir.action,name:act_summary"
+msgid "Summarize Moves"
+msgstr "Resúmenes de asientos contables"
+
+msgctxt "model:ir.action,name:act_summary_move_form"
+msgid "Summary Moves"
+msgstr "Asientos contables resumidos"
+
+msgctxt "model:ir.action,name:act_summary_move_line_form"
+msgid "Summary Move Lines"
+msgstr "Líneas de asientos resumidos"
+
+msgctxt "model:ir.action,name:report_summary_general_journal"
+msgid "General Journal"
+msgstr "Libro diario"
+
+msgctxt "model:ir.message,text:msg_change_period_post_move_sequence"
+msgid ""
+"You cannot change the post summary move sequence in period \"%(period)s\" "
+"because it has posted moves."
+msgstr ""
+"No es posible cambiar la secuencia de asientos resumidos del período "
+"\"%(period)s\" porque tiene asientos contabilizados."
+
+msgctxt "model:ir.message,text:msg_delete_posted_summary"
+msgid "Summary \"%(summary)s\" in calculated or posted state can not be deleted."
+msgstr ""
+"El resumen \"%(summary)s\" en estado calculado o contabilizado no puede ser "
+"eliminado."
+
+msgctxt "model:ir.model.button,string:summary_compute_button"
+msgid "Compute"
+msgstr "Calcular"
+
+msgctxt "model:ir.model.button,string:summary_draft_button"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "model:ir.model.button,string:summary_post_button"
+msgid "Post"
+msgstr "Contabilizar"
+
+msgctxt "model:ir.ui.menu,name:menu_act_summary"
+msgid "Summarize Moves"
+msgstr "Resúmenes de asientos contables"
+
+msgctxt "model:ir.ui.menu,name:menu_summary_move_form"
+msgid "Summary Moves"
+msgstr "Asientos contables resumidos"
+
+msgctxt "model:account.summary.move.renumber.start,name:"
+msgid "Renumber Summary Account Moves Start"
+msgstr "Renumerar asientos resumidos - Inicio"
+
+msgctxt "model:ir.action,name:wizard_summary_move_renumber"
+msgid "Renumber Summary Moves"
+msgstr "Renumerar asientos resumidos"
+
+msgctxt "model:ir.message,text:draft_moves_in_fiscalyear"
+msgid "There are Draft Moves in Fiscal Year \"%(fiscalyear)s\"."
+msgstr "Hay asientos en Borrador en el ejercicio \"%(fiscalyear)s\"."
+
+msgctxt "model:ir.ui.menu,name:menu_summary_move_renumber"
+msgid "Renumber Summary Moves"
+msgstr "Renumerar asientos resumidos"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "/"
+msgstr "/"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Account"
+msgstr "Cuenta"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Company:"
+msgstr "Empresa:"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Credit"
+msgstr "Haber"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Date:"
+msgstr "Fecha:"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Debit"
+msgstr "Débito"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Description"
+msgstr "Descripción"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "General Journal"
+msgstr "Libro diario"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Journal Entry:"
+msgstr "Asiento:"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Number:"
+msgstr "Número"
+
+msgctxt "report:account.summary.move.general_journal:"
+msgid "Total"
+msgstr "Total"
+
+msgctxt "selection:account.summary,state:"
+msgid "Calculated"
+msgstr "Calculado"
+
+msgctxt "selection:account.summary,state:"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "selection:account.summary,state:"
+msgid "Posted"
+msgstr "Contabilizado"
+
+msgctxt "selection:account.summary.move,state:"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "selection:account.summary.move,state:"
+msgid "Posted"
+msgstr "Contabilizado"
+
+msgctxt "selection:account.summary.move.line,state:"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "selection:account.summary.move.line,state:"
+msgid "Valid"
+msgstr "Válido"
+
+msgctxt "view:account.summary.move.line:"
+msgid "Credit"
+msgstr "Haber"
+
+msgctxt "view:account.summary.move.line:"
+msgid "Debit"
+msgstr "Débito"
+
+msgctxt "view:account.summary.move.line:"
+msgid "Other Info"
+msgstr "Información adicional"
+
+msgctxt "view:account.summary.move.renumber.start:"
+msgid ""
+"This process will take a few minutes. Please, ensure that nobody create or "
+"confirm moves for selected fiscal year."
+msgstr ""
+"Este proceso puede llevar tiempo. Asegúrese de que nadie esté creando o "
+"confirmando asientos en el ejercicio seleccionado."
+
+msgctxt "wizard_button:account.summary.move.renumber,start,end:"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt "wizard_button:account.summary.move.renumber,start,renumber:"
+msgid "Renumber"
+msgstr "Renumerar"
