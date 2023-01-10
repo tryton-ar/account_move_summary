@@ -409,12 +409,12 @@ class SummaryLine(ModelSQL, ModelView):
     debit = fields.Numeric('Debit', digits=(16, Eval('currency_digits', 2)),
         required=True, states=_LINE_STATES,
         depends=[
-            'currency_digits', 'credit', 'tax_lines', 'journal'
+            'currency_digits', 'credit'
             ] + _LINE_DEPENDS)
     credit = fields.Numeric('Credit', digits=(16, Eval('currency_digits', 2)),
         required=True, states=_LINE_STATES,
         depends=[
-            'currency_digits', 'debit', 'tax_lines', 'journal'
+            'currency_digits', 'debit'
             ] + _LINE_DEPENDS)
     account = fields.Many2One('account.account', 'Account', required=True,
         domain=[
