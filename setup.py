@@ -69,7 +69,7 @@ if minor_version % 2:
 setup(name='%s_%s' % (PREFIX, MODULE),
     version=version,
     description='Tryton module to generate Librio Dario Resumido ',
-    long_description=read('README'),
+    long_description=read('README.rst'),
     author='tryton-ar',
     url='https://github.com/tryton-ar/account_move_summary',
     download_url=download_url,
