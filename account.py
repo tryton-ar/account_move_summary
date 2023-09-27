@@ -1,9 +1,10 @@
 # This file is part of the account_move_summary module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
+
 from trytond.model import fields
-from trytond.pool import Pool, PoolMeta
 from trytond.model.exceptions import ValidationError
+from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval, Id
 from trytond.i18n import gettext
 
@@ -18,8 +19,7 @@ class FiscalYear(metaclass=PoolMeta):
             ('sequence_type', '=',
                 Id('account', 'sequence_type_account_move')),
             ('company', '=', Eval('company')),
-            ],
-        depends=['company'])
+            ])
 
 
 class Period(metaclass=PoolMeta):
@@ -34,8 +34,7 @@ class Period(metaclass=PoolMeta):
                 ('company', '=', None),
                 ('company', '=', Eval('company', -1)),
                 ],
-            ],
-        depends=['company'])
+            ])
 
     @classmethod
     def create(cls, vlist):

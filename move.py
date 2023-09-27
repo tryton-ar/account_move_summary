@@ -8,24 +8,22 @@ from operator import itemgetter
 from sql.aggregate import Sum
 from sql.functions import CharLength
 
-from trytond.i18n import gettext
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.model.exceptions import AccessError
 from trytond.wizard import Wizard, StateView, StateAction, Button
+from trytond.report import Report
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import PYSONEncoder, Eval, Bool, If
-from trytond.report import Report
 from trytond.transaction import Transaction
+from trytond.i18n import gettext
 from trytond.tools import reduce_ids, grouped_slice
 
 _MOVE_STATES = {
     'readonly': Eval('state') == 'posted',
     }
-_MOVE_DEPENDS = ['state']
 _LINE_STATES = {
     'readonly': Eval('move_state') == 'posted',
     }
-_LINE_DEPENDS = ['move_state']
 
 
 class Summary(Workflow, ModelSQL, ModelView):
@@ -33,23 +31,23 @@ class Summary(Workflow, ModelSQL, ModelView):
     __name__ = 'account.summary'
 
     _states = {'readonly': Eval('state') != 'draft'}
-    _depends = ['state']
 
     name = fields.Char('Name', required=True,
-        states=_states, depends=_depends)
-    company = fields.Many2One('company.company', 'Company', required=True,
-        states=_states, depends=_depends)
-    date = fields.Date('Date', required=True,
-        states=_states, depends=_depends)
+        states=_states)
+    company = fields.Many2One('company.company', 'Company',
+        required=True, states=_states)
+    date = fields.Date('Date', required=True, states=_states)
     periods = fields.Many2Many('account.summary.period',
         'summary', 'period', 'Periods', required=True,
         domain=[('company', '=', Eval('company', -1))],
-        states=_states, depends=_depends + ['company'])
+        states=_states)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('calculated', 'Calculated'),
         ('posted', 'Posted'),
         ], 'State', required=True, readonly=True, select=True)
+
+    del _states
 
     @classmethod
     def __setup__(cls):
@@ -242,9 +240,10 @@ class SummaryMove(ModelSQL, ModelView):
     post_number = fields.Char('Post Number', readonly=True,
         help='Also known as Folio Number.')
     company = fields.Many2One('company.company', 'Company', required=True,
-        states=_MOVE_STATES, depends=_MOVE_DEPENDS)
+        states=_MOVE_STATES)
     journal = fields.Many2One('account.journal', 'Journal', required=True,
-        states=_MOVE_STATES, depends=_MOVE_DEPENDS)
+        states=_MOVE_STATES, depends={'company'},
+        context={'company': Eval('company', -1)})
     period = fields.Many2One('account.period', 'Period', required=True,
         domain=[
             ('company', '=', Eval('company', -1)),
@@ -252,24 +251,19 @@ class SummaryMove(ModelSQL, ModelView):
                 ('state', '=', 'open'),
                 ()),
             ],
-        states=_MOVE_STATES, depends=_MOVE_DEPENDS + ['company', 'state'],
-        select=True)
-    date = fields.Date('Effective Date', select=True,
-        states=_MOVE_STATES, depends=_MOVE_DEPENDS)
+        states=_MOVE_STATES)
+    date = fields.Date('Effective Date', states=_MOVE_STATES)
     post_date = fields.Date('Post Date', readonly=True)
-    description = fields.Char('Description', states=_MOVE_STATES,
-        depends=_MOVE_DEPENDS)
+    description = fields.Char('Description', states=_MOVE_STATES)
     summary = fields.Many2One('account.summary',
-        'Summary', readonly=True, depends=['company'],
-        domain=[
-            ('company', '=', Eval('company', -1)),
-            ])
+        'Summary', readonly=True,
+        domain=[('company', '=', Eval('company', -1))])
     state = fields.Selection([
         ('draft', 'Draft'),
         ('posted', 'Posted'),
         ], 'State', required=True, readonly=True, select=True)
     lines = fields.One2Many('account.summary.move.line', 'move', 'Lines',
-        states=_MOVE_STATES, depends=_MOVE_DEPENDS + ['company'],
+        states=_MOVE_STATES, depends={'period', 'date'},
         context={
             'period': Eval('period'),
             'date': Eval('date'),
@@ -407,15 +401,9 @@ class SummaryLine(ModelSQL, ModelView):
     __name__ = 'account.summary.move.line'
 
     debit = fields.Numeric('Debit', digits=(16, Eval('currency_digits', 2)),
-        required=True, states=_LINE_STATES,
-        depends=[
-            'currency_digits', 'credit'
-            ] + _LINE_DEPENDS)
+        required=True, states=_LINE_STATES)
     credit = fields.Numeric('Credit', digits=(16, Eval('currency_digits', 2)),
-        required=True, states=_LINE_STATES,
-        depends=[
-            'currency_digits', 'debit'
-            ] + _LINE_DEPENDS)
+        required=True, states=_LINE_STATES)
     account = fields.Many2One('account.account', 'Account', required=True,
         domain=[
             ('company', '=', Eval('company', -1)),
@@ -433,8 +421,7 @@ class SummaryLine(ModelSQL, ModelView):
         context={
             'company': Eval('company', -1),
             },
-        select=True, states=_LINE_STATES,
-        depends=_LINE_DEPENDS + ['date', 'company'])
+        states=_LINE_STATES, depends={'company'})
     move = fields.Many2One('account.summary.move', 'Move', select=True,
         required=True, ondelete='CASCADE',
         states={
@@ -442,37 +429,29 @@ class SummaryLine(ModelSQL, ModelView):
             'readonly': (
                 ((Eval('state') == 'valid') | _LINE_STATES['readonly'])
                 & Bool(Eval('move'))),
-            },
-        depends=['state'] + _LINE_DEPENDS)
+            })
     period = fields.Function(fields.Many2One('account.period', 'Period',
-            states=_LINE_STATES, depends=_LINE_DEPENDS),
-            'get_move_field', setter='set_move_field',
-            searcher='search_move_field')
-    company = fields.Function(fields.Many2One(
-            'company.company', "Company", states=_LINE_STATES,
-            depends=_LINE_DEPENDS),
-            'get_move_field', setter='set_move_field',
-            searcher='search_move_field')
+        states=_LINE_STATES), 'get_move_field',
+        setter='set_move_field', searcher='search_move_field')
+    company = fields.Function(fields.Many2One('company.company', "Company",
+        states=_LINE_STATES), 'get_move_field',
+        setter='set_move_field', searcher='search_move_field')
     date = fields.Function(fields.Date('Effective Date', required=True,
-            states=_LINE_STATES, depends=_LINE_DEPENDS),
-            'on_change_with_date', setter='set_move_field',
-            searcher='search_move_field')
-    description = fields.Char('Description', states=_LINE_STATES,
-            depends=_LINE_DEPENDS)
+        states=_LINE_STATES), 'on_change_with_date',
+        setter='set_move_field', searcher='search_move_field')
+    description = fields.Char('Description', states=_LINE_STATES)
     move_description = fields.Function(fields.Char('Move Description',
-            states=_LINE_STATES, depends=_LINE_DEPENDS),
-        'get_move_field', setter='set_move_field',
-        searcher='search_move_field')
+        states=_LINE_STATES), 'get_move_field',
+        setter='set_move_field', searcher='search_move_field')
     amount_second_currency = fields.Numeric('Amount Second Currency',
         digits=(16, Eval('second_currency_digits', 2)),
         help='The amount expressed in a second currency.',
         states={
             'required': Bool(Eval('second_currency')),
             'readonly': _LINE_STATES['readonly'],
-            },
-        depends=['second_currency_digits', 'second_currency'] + _LINE_DEPENDS)
+            })
     second_currency = fields.Many2One('currency.currency', 'Second Currency',
-            help='The second currency.',
+        help='The second currency.',
         domain=[
             If(~Eval('second_currency_required'),
                 (),
@@ -482,9 +461,7 @@ class SummaryLine(ModelSQL, ModelView):
             'required': (Bool(Eval('amount_second_currency'))
                 | Bool(Eval('second_currency_required'))),
             'readonly': _LINE_STATES['readonly']
-            },
-        depends=['amount_second_currency',
-            'second_currency_required'] + _LINE_DEPENDS)
+            })
     second_currency_required = fields.Function(
         fields.Many2One('currency.currency', "Second Currency Required"),
         'on_change_with_second_currency_required')
@@ -495,20 +472,19 @@ class SummaryLine(ModelSQL, ModelView):
     move_state = fields.Function(
         fields.Selection('get_move_states', "Move State"),
         'on_change_with_move_state', searcher='search_move_field')
-    currency = fields.Function(fields.Many2One(
-            'currency.currency', "Currency"), 'on_change_with_currency')
+    currency = fields.Function(fields.Many2One('currency.currency',
+        "Currency"), 'on_change_with_currency')
     currency_digits = fields.Function(fields.Integer('Currency Digits'),
-            'on_change_with_currency_digits')
+        'on_change_with_currency_digits')
     second_currency_digits = fields.Function(fields.Integer(
         'Second Currency Digits'), 'on_change_with_second_currency_digits')
     amount = fields.Function(fields.Numeric('Amount',
-            digits=(16, Eval('amount_currency_digits', 2)),
-            depends=['amount_currency_digits']),
+        digits=(16, Eval('amount_currency_digits', 2))),
         'get_amount')
     amount_currency = fields.Function(fields.Many2One('currency.currency',
-            'Amount Currency'), 'get_amount_currency')
+        'Amount Currency'), 'get_amount_currency')
     amount_currency_digits = fields.Function(fields.Integer(
-            'Amount Currency Digits'), 'get_amount_currency')
+        'Amount Currency Digits'), 'get_amount_currency')
 
     @classmethod
     def default_company(cls):
@@ -620,10 +596,7 @@ class Move(metaclass=PoolMeta):
 
     summary_move = fields.Many2One('account.summary.move',
         'Summary Move', help="The related summarized move.",
-        readonly=True, depends=['company'],
-        domain=[
-            ('company', '=', Eval('company', -1)),
-            ])
+        readonly=True, domain=[('company', '=', Eval('company', -1))])
 
     @classmethod
     def __setup__(cls):
@@ -640,7 +613,7 @@ class RenumberSummaryMovesStart(ModelView):
     first_number = fields.Integer('First Number', required=True,
         domain=[('first_number', '>', 0)])
     first_move = fields.Many2One('account.summary.move', 'First Move',
-        required=True, depends=['fiscalyear'],
+        required=True,
         domain=[('period.fiscalyear', '=', Eval('fiscalyear', None))])
 
     @staticmethod
