@@ -45,7 +45,7 @@ class Summary(Workflow, ModelSQL, ModelView):
         ('draft', 'Draft'),
         ('calculated', 'Calculated'),
         ('posted', 'Posted'),
-        ], 'State', required=True, readonly=True, select=True)
+        ], 'State', required=True, readonly=True)
 
     del _states
 
@@ -225,10 +225,10 @@ class SummaryPeriod(ModelSQL):
     'Summary - Period'
     __name__ = 'account.summary.period'
 
-    summary = fields.Many2One('account.summary',
-        'Summary', ondelete='CASCADE', select=True, required=True)
-    period = fields.Many2One('account.period', 'Period', ondelete='CASCADE',
-        select=True, required=True)
+    summary = fields.Many2One('account.summary', 'Summary',
+        ondelete='CASCADE', required=True)
+    period = fields.Many2One('account.period', 'Period',
+        ondelete='CASCADE', required=True)
 
 
 class SummaryMove(ModelSQL, ModelView):
@@ -261,7 +261,7 @@ class SummaryMove(ModelSQL, ModelView):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('posted', 'Posted'),
-        ], 'State', required=True, readonly=True, select=True)
+        ], 'State', required=True, readonly=True)
     lines = fields.One2Many('account.summary.move.line', 'move', 'Lines',
         states=_MOVE_STATES, depends={'period', 'date'},
         context={
@@ -422,7 +422,7 @@ class SummaryLine(ModelSQL, ModelView):
             'company': Eval('company', -1),
             },
         states=_LINE_STATES, depends={'company'})
-    move = fields.Many2One('account.summary.move', 'Move', select=True,
+    move = fields.Many2One('account.summary.move', 'Move',
         required=True, ondelete='CASCADE',
         states={
             'required': False,
@@ -468,7 +468,7 @@ class SummaryLine(ModelSQL, ModelView):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('valid', 'Valid'),
-        ], 'State', readonly=True, required=True, select=True)
+        ], 'State', readonly=True, required=True)
     move_state = fields.Function(
         fields.Selection('get_move_states', "Move State"),
         'on_change_with_move_state', searcher='search_move_field')
