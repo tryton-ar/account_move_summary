@@ -10,6 +10,7 @@ from sql.functions import CharLength
 
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.model.exceptions import AccessError
+from trytond.modules.currency.fields import Monetary
 from trytond.wizard import Wizard, StateView, StateAction, Button
 from trytond.report import Report
 from trytond.pool import Pool, PoolMeta
@@ -400,9 +401,9 @@ class SummaryLine(ModelSQL, ModelView):
     'Summary Move Line'
     __name__ = 'account.summary.move.line'
 
-    debit = fields.Numeric('Debit', digits=(16, Eval('currency_digits', 2)),
+    debit = Monetary("Debit", currency='currency', digits='currency',
         required=True, states=_LINE_STATES)
-    credit = fields.Numeric('Credit', digits=(16, Eval('currency_digits', 2)),
+    credit = Monetary("Credit", currency='currency', digits='currency',
         required=True, states=_LINE_STATES)
     account = fields.Many2One('account.account', 'Account', required=True,
         domain=[
@@ -443,8 +444,8 @@ class SummaryLine(ModelSQL, ModelView):
     move_description = fields.Function(fields.Char('Move Description',
         states=_LINE_STATES), 'get_move_field',
         setter='set_move_field', searcher='search_move_field')
-    amount_second_currency = fields.Numeric('Amount Second Currency',
-        digits=(16, Eval('second_currency_digits', 2)),
+    amount_second_currency = Monetary("Amount Second Currency",
+        currency='second_currency', digits='second_currency',
         help='The amount expressed in a second currency.',
         states={
             'required': Bool(Eval('second_currency')),
@@ -474,17 +475,11 @@ class SummaryLine(ModelSQL, ModelView):
         'on_change_with_move_state', searcher='search_move_field')
     currency = fields.Function(fields.Many2One('currency.currency',
         "Currency"), 'on_change_with_currency')
-    currency_digits = fields.Function(fields.Integer('Currency Digits'),
-        'on_change_with_currency_digits')
-    second_currency_digits = fields.Function(fields.Integer(
-        'Second Currency Digits'), 'on_change_with_second_currency_digits')
-    amount = fields.Function(fields.Numeric('Amount',
-        digits=(16, Eval('amount_currency_digits', 2))),
+    amount = fields.Function(Monetary("Amount",
+        currency='amount_currency', digits='amount_currency'),
         'get_amount')
     amount_currency = fields.Function(fields.Many2One('currency.currency',
         'Amount Currency'), 'get_amount_currency')
-    amount_currency_digits = fields.Function(fields.Integer(
-        'Amount Currency Digits'), 'get_amount_currency')
 
     @classmethod
     def default_company(cls):
@@ -498,20 +493,6 @@ class SummaryLine(ModelSQL, ModelView):
     def on_change_with_currency(self, name=None):
         if self.account:
             return self.account.currency.id
-
-    @fields.depends('account')
-    def on_change_with_currency_digits(self, name=None):
-        if self.account:
-            return self.account.currency_digits
-        else:
-            return 2
-
-    @fields.depends('second_currency')
-    def on_change_with_second_currency_digits(self, name=None):
-        if self.second_currency:
-            return self.second_currency.digits
-        else:
-            return 2
 
     @fields.depends('account')
     def on_change_with_second_currency_required(self, name=None):
@@ -577,8 +558,6 @@ class SummaryLine(ModelSQL, ModelView):
             currency = self.account.currency
         if name == 'amount_currency':
             return currency.id
-        elif name == 'amount_currency_digits':
-            return currency.digits
 
     def get_rec_name(self, name):
         if self.debit > self.credit:
