@@ -26,6 +26,10 @@ msgctxt "field:account.summary,name:"
 msgid "Name"
 msgstr "Nombre"
 
+msgctxt "field:account.summary,summary_type:"
+msgid "Type"
+msgstr "Tipo"
+
 msgctxt "field:account.summary,periods:"
 msgid "Periods"
 msgstr "Períodos"
@@ -319,6 +323,14 @@ msgstr "Número"
 msgctxt "report:account.summary.move.general_journal:"
 msgid "Total"
 msgstr "Total"
+
+msgctxt "selection:account.summary,summary_type:"
+msgid "All moves"
+msgstr "Todos los asientos"
+
+msgctxt "selection:account.summary,summary_type:"
+msgid "Only purchases and sales"
+msgstr "Sólo compras y ventas"
 
 msgctxt "selection:account.summary,state:"
 msgid "Calculated"

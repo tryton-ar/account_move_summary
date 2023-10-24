@@ -38,6 +38,10 @@ class Summary(Workflow, ModelSQL, ModelView):
     company = fields.Many2One('company.company', 'Company',
         required=True, states=_states)
     date = fields.Date('Date', required=True, states=_states)
+    summary_type = fields.Selection([
+        ('purchases_and_sales', 'Only purchases and sales'),
+        ('all_moves', 'All moves'),
+        ], 'Type', required=True, states=_states)
     periods = fields.Many2Many('account.summary.period',
         'summary', 'period', 'Periods', required=True,
         domain=[('company', '=', Eval('company', -1))],
@@ -74,6 +78,10 @@ class Summary(Workflow, ModelSQL, ModelView):
                 'depends': ['state'],
                 },
             })
+
+    @staticmethod
+    def default_summary_type():
+        return 'purchases_and_sales'
 
     @staticmethod
     def default_state():
@@ -128,18 +136,27 @@ class Summary(Workflow, ModelSQL, ModelView):
                 ])
             for move in moves:
                 type_ = None
+                single_move = False
                 origin = str(move.origin).split(',')[0] \
                     if move.origin else None
+
                 if origin:
-                    type_ = '%s_%s' % (
-                        origin.replace('.', '_'), str(move.journal.id))
-                    if type_ not in accum:
-                        accum[type_] = {
-                            'moves': [],
-                            'model': origin,
-                            'journal': move.journal
-                            }
+                    if self.summary_type == 'purchases_and_sales' \
+                            and origin != 'account.invoice':
+                        single_move = True
+                    else:
+                        type_ = '%s_%s' % (
+                            origin.replace('.', '_'), str(move.journal.id))
+                        if type_ not in accum:
+                            accum[type_] = {
+                                'moves': [],
+                                'model': origin,
+                                'journal': move.journal
+                                }
                 else:
+                    single_move = True
+
+                if single_move:
                     type_ = 'single_move_%s' % str(move.id)
                     accum[type_] = {
                         'moves': [],

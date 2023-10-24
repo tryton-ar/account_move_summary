@@ -2,5 +2,6 @@
 <tree>
     <field name="date"/>
     <field name="name"/>
+    <field name="summary_type"/>
     <field name="state"/>
 </tree>
