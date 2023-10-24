@@ -90,10 +90,6 @@ msgctxt "field:account.summary.move.line,amount_currency:"
 msgid "Amount Currency"
 msgstr "Moneda del importe"
 
-msgctxt "field:account.summary.move.line,amount_currency_digits:"
-msgid "Amount Currency Digits"
-msgstr "Decimales de la moneda del importe"
-
 msgctxt "field:account.summary.move.line,amount_second_currency:"
 msgid "Amount Second Currency"
 msgstr "Importe segunda moneda"
@@ -109,10 +105,6 @@ msgstr "Haber"
 msgctxt "field:account.summary.move.line,currency:"
 msgid "Currency"
 msgstr "Moneda"
-
-msgctxt "field:account.summary.move.line,currency_digits:"
-msgid "Currency Digits"
-msgstr "Decimales de la moneda"
 
 msgctxt "field:account.summary.move.line,date:"
 msgid "Effective Date"
@@ -145,10 +137,6 @@ msgstr "Período"
 msgctxt "field:account.summary.move.line,second_currency:"
 msgid "Second Currency"
 msgstr "Segunda moneda"
-
-msgctxt "field:account.summary.move.line,second_currency_digits:"
-msgid "Second Currency Digits"
-msgstr "Decimales de la segunda moneda"
 
 msgctxt "field:account.summary.move.line,second_currency_required:"
 msgid "Second Currency Required"
