@@ -3,8 +3,8 @@
     <field name="move"/>
     <field name="date"/>
     <field name="account" expand="1"/>
-    <field name="debit" sum="Debit" symbol="currency"/>
-    <field name="credit" sum="Credit" symbol="currency"/>
+    <field name="debit" sum="1" symbol="currency"/>
+    <field name="credit" sum="1" symbol="currency"/>
     <field name="description" expand="1"/>
     <field name="move_description" expand="1"/>
     <field name="state"/>
