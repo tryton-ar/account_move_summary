@@ -754,6 +754,7 @@ class SummaryGeneralJournal(Report):
 
         if not records and 'fiscalyear' in data:
             records = SummaryMove.search([
+                ('state', '=', 'posted'),
                 ('period.fiscalyear', '=', data['fiscalyear']),
                 ])
         records = sorted(records, key=lambda i: (i.post_number or '', i.date))
