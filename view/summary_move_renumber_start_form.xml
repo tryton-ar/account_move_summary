@@ -8,4 +8,6 @@
     <field name="first_move"/>
     <label name="first_number"/>
     <field name="first_number"/>
+    <label name="last_move"/>
+    <field name="last_move"/>
 </form>
