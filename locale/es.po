@@ -26,10 +26,6 @@ msgctxt "field:account.summary,name:"
 msgid "Name"
 msgstr "Nombre"
 
-msgctxt "field:account.summary,summary_type:"
-msgid "Type"
-msgstr "Tipo"
-
 msgctxt "field:account.summary,periods:"
 msgid "Periods"
 msgstr "Períodos"
@@ -37,6 +33,10 @@ msgstr "Períodos"
 msgctxt "field:account.summary,state:"
 msgid "State"
 msgstr "Estado"
+
+msgctxt "field:account.summary,summary_type:"
+msgid "Type"
+msgstr "Tipo"
 
 msgctxt "field:account.summary.move,company:"
 msgid "Company"
@@ -150,14 +150,6 @@ msgctxt "field:account.summary.move.line,state:"
 msgid "State"
 msgstr "Estado"
 
-msgctxt "field:account.summary.period,period:"
-msgid "Period"
-msgstr "Período"
-
-msgctxt "field:account.summary.period,summary:"
-msgid "Summary"
-msgstr "Resumen"
-
 msgctxt "field:account.summary.move.renumber.start,first_move:"
 msgid "First Move"
 msgstr "Primer asiento"
@@ -169,6 +161,14 @@ msgstr "Primer número"
 msgctxt "field:account.summary.move.renumber.start,fiscalyear:"
 msgid "Fiscal Year"
 msgstr "Ejercicio fiscal"
+
+msgctxt "field:account.summary.period,period:"
+msgid "Period"
+msgstr "Período"
+
+msgctxt "field:account.summary.period,summary:"
+msgid "Summary"
+msgstr "Resumen"
 
 msgctxt "help:account.move,summary_move:"
 msgid "The related summarized move."
@@ -198,6 +198,10 @@ msgctxt "model:account.summary.move.line,name:"
 msgid "Summary Move Line"
 msgstr "Línea de asiento resumido"
 
+msgctxt "model:account.summary.move.renumber.start,name:"
+msgid "Renumber Summary Account Moves Start"
+msgstr "Renumerar asientos resumidos - Inicio"
+
 msgctxt "model:account.summary.period,name:"
 msgid "Summary - Period"
 msgstr "Resumen - Período"
@@ -226,6 +230,14 @@ msgctxt "model:ir.action,name:report_summary_general_journal"
 msgid "General Journal"
 msgstr "Libro diario"
 
+msgctxt "model:ir.action,name:wizard_summary_move_renumber"
+msgid "Renumber Summary Moves"
+msgstr "Renumerar asientos resumidos"
+
+msgctxt "model:ir.message,text:draft_moves_in_fiscalyear"
+msgid "There are Draft Moves in Fiscal Year \"%(fiscalyear)s\"."
+msgstr "Hay asientos en Borrador en el ejercicio \"%(fiscalyear)s\"."
+
 msgctxt "model:ir.message,text:msg_change_period_post_move_sequence"
 msgid ""
 "You cannot change the post summary move sequence in period \"%(period)s\" "
@@ -252,6 +264,18 @@ msgctxt "model:ir.model.button,string:summary_post_button"
 msgid "Post"
 msgstr "Contabilizar"
 
+msgctxt "model:ir.rule.group,name:rule_group_summary_companies"
+msgid "User in companies"
+msgstr "Usuario en las empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_summary_move_companies"
+msgid "User in companies"
+msgstr "Usuario en las empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_summary_move_line_companies"
+msgid "User in companies"
+msgstr "Usuario en las empresas"
+
 msgctxt "model:ir.ui.menu,name:menu_act_summary"
 msgid "Summarize Moves"
 msgstr "Resúmenes de asientos contables"
@@ -259,18 +283,6 @@ msgstr "Resúmenes de asientos contables"
 msgctxt "model:ir.ui.menu,name:menu_summary_move_form"
 msgid "Summary Moves"
 msgstr "Asientos contables resumidos"
-
-msgctxt "model:account.summary.move.renumber.start,name:"
-msgid "Renumber Summary Account Moves Start"
-msgstr "Renumerar asientos resumidos - Inicio"
-
-msgctxt "model:ir.action,name:wizard_summary_move_renumber"
-msgid "Renumber Summary Moves"
-msgstr "Renumerar asientos resumidos"
-
-msgctxt "model:ir.message,text:draft_moves_in_fiscalyear"
-msgid "There are Draft Moves in Fiscal Year \"%(fiscalyear)s\"."
-msgstr "Hay asientos en Borrador en el ejercicio \"%(fiscalyear)s\"."
 
 msgctxt "model:ir.ui.menu,name:menu_summary_move_renumber"
 msgid "Renumber Summary Moves"
@@ -324,14 +336,6 @@ msgctxt "report:account.summary.move.general_journal:"
 msgid "Total"
 msgstr "Total"
 
-msgctxt "selection:account.summary,summary_type:"
-msgid "All moves"
-msgstr "Todos los asientos"
-
-msgctxt "selection:account.summary,summary_type:"
-msgid "Only purchases and sales"
-msgstr "Sólo compras y ventas"
-
 msgctxt "selection:account.summary,state:"
 msgid "Calculated"
 msgstr "Calculado"
@@ -343,6 +347,14 @@ msgstr "Borrador"
 msgctxt "selection:account.summary,state:"
 msgid "Posted"
 msgstr "Contabilizado"
+
+msgctxt "selection:account.summary,summary_type:"
+msgid "All moves"
+msgstr "Todos los asientos"
+
+msgctxt "selection:account.summary,summary_type:"
+msgid "Only purchases and sales"
+msgstr "Sólo compras y ventas"
 
 msgctxt "selection:account.summary.move,state:"
 msgid "Draft"
