@@ -14,6 +14,14 @@ msgctxt "field:account.period,post_summary_move_sequence:"
 msgid "Post Summary Move Sequence"
 msgstr "Secuencia de asientos resumidos"
 
+msgctxt "field:account.print_summary_move_general_journal.start,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.print_summary_move_general_journal.start,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "Ejercicio fiscal"
+
 msgctxt "field:account.summary,company:"
 msgid "Company"
 msgstr "Empresa"
@@ -186,6 +194,10 @@ msgctxt "help:account.summary.move.line,second_currency:"
 msgid "The second currency."
 msgstr "La segunda moneda."
 
+msgctxt "model:account.print_summary_move_general_journal.start,name:"
+msgid "General Journal (Summary Moves)"
+msgstr "Libro diario (Asientos resumidos)"
+
 msgctxt "model:account.summary,name:"
 msgid "Summary"
 msgstr "Resumen"
@@ -229,6 +241,10 @@ msgstr "Líneas de asientos resumidos"
 msgctxt "model:ir.action,name:report_summary_general_journal"
 msgid "General Journal"
 msgstr "Libro diario"
+
+msgctxt "model:ir.action,name:wizard_print_summary_move_general_journal"
+msgid "General Journal (Summary Moves)"
+msgstr "Libro diario (Asientos resumidos)"
 
 msgctxt "model:ir.action,name:wizard_summary_move_renumber"
 msgid "Renumber Summary Moves"
@@ -279,6 +295,10 @@ msgstr "Usuario en las empresas"
 msgctxt "model:ir.ui.menu,name:menu_act_summary"
 msgid "Summarize Moves"
 msgstr "Resúmenes de asientos contables"
+
+msgctxt "model:ir.ui.menu,name:menu_print_summary_move_general_journal"
+msgid "General Journal (Summary Moves)"
+msgstr "Libro diario (Asientos resumidos)"
 
 msgctxt "model:ir.ui.menu,name:menu_summary_move_form"
 msgid "Summary Moves"
@@ -391,6 +411,15 @@ msgid ""
 msgstr ""
 "Este proceso puede llevar tiempo. Asegúrese de que nadie esté creando o "
 "confirmando asientos en el ejercicio seleccionado."
+
+msgctxt "wizard_button:account.print_summary_move_general_journal,start,end:"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt ""
+"wizard_button:account.print_summary_move_general_journal,start,print_:"
+msgid "Print"
+msgstr "Imprimir"
 
 msgctxt "wizard_button:account.summary.move.renumber,start,end:"
 msgid "Cancel"
