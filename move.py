@@ -756,7 +756,7 @@ class SummaryGeneralJournal(Report):
             records = SummaryMove.search([
                 ('period.fiscalyear', '=', data['fiscalyear']),
                 ])
-        records = sorted(records, key=lambda i: (i.post_number, i.date))
+        records = sorted(records, key=lambda i: (i.post_number or '', i.date))
         context = Transaction().context
         report_context = super().get_context(records, header, data)
         report_context['company'] = Company(
