@@ -16,6 +16,7 @@ from trytond.report import Report
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import PYSONEncoder, Eval, Bool, If
 from trytond.transaction import Transaction
+from trytond.exceptions import UserWarning
 from trytond.i18n import gettext
 from trytond.tools import reduce_ids, grouped_slice
 
@@ -627,7 +628,8 @@ class RenumberSummaryMovesStart(ModelView):
     first_number = fields.Integer('First Number', required=True,
         domain=[('first_number', '>', 0)])
     first_move = fields.Many2One('account.summary.move', 'First Move',
-        required=True,
+        domain=[('period.fiscalyear', '=', Eval('fiscalyear', None))])
+    last_move = fields.Many2One('account.summary.move', 'Last Move',
         domain=[('period.fiscalyear', '=', Eval('fiscalyear', None))])
 
     @staticmethod
@@ -652,6 +654,7 @@ class RenumberSummaryMoves(Wizard):
         SummaryMove = pool.get('account.summary.move')
         Sequence = pool.get('ir.sequence')
         Warning = pool.get('res.user.warning')
+
         draft_moves = SummaryMove.search([
                 ('period.fiscalyear', '=', self.start.fiscalyear.id),
                 ('state', '=', 'draft'),
@@ -668,8 +671,9 @@ class RenumberSummaryMoves(Wizard):
         for period in self.start.fiscalyear.periods:
             if period.post_summary_move_sequence:
                 sequences.add(period.post_summary_move_sequence)
+        sequences = list(filter(None, sequences))
 
-        Sequence.write(list(sequences), {
+        Sequence.write(sequences, {
                 'number_next': self.start.first_number,
                 })
 
@@ -681,27 +685,39 @@ class RenumberSummaryMoves(Wizard):
                 ('date', 'ASC'),
                 ('id', 'ASC'),
                 ])
-        move_vals = []
+
+        first_move = self.start.first_move
+        last_move = self.start.last_move
+
+        to_write = []
         for move in moves_to_renumber:
-            if move == self.start.first_move:
+            if move == first_move:
                 number_next_old = \
                     move.period.post_summary_move_sequence_used.number_next
-                Sequence.write(list(sequences), {
+                Sequence.write(sequences, {
                     'number_next': 1,
                     })
-                move_vals.extend(([move], {
+                to_write.extend(([move], {
                     'post_number':
                         move.period.post_summary_move_sequence_used.get(),
                     }))
-                Sequence.write(list(sequences), {
+                Sequence.write(sequences, {
                     'number_next': number_next_old,
                     })
                 continue
-            move_vals.extend(([move], {
+            if move == last_move:
+                continue
+            to_write.extend(([move], {
                 'post_number': (
                     move.period.post_summary_move_sequence_used.get()),
                 }))
-        SummaryMove.write(*move_vals)
+        if last_move:
+            to_write.extend(([last_move], {
+                'post_number': (
+                    last_move.period.post_summary_move_sequence_used.get()),
+                }))
+        if to_write:
+            SummaryMove.write(*to_write)
 
         action['pyson_domain'] = PYSONEncoder().encode([
             ('period.fiscalyear', '=', self.start.fiscalyear.id),
