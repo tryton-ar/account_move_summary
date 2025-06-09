@@ -171,6 +171,15 @@ class Summary(Workflow, ModelSQL, ModelView):
                     if account_id in [
                             'moves', 'model', 'journal', 'description']:
                         continue
+                    # Force debit or credit to zero
+                    if value['debit'] != Decimal('0.0') and \
+                            value['credit'] != Decimal('0.0'):
+                        if value['debit'] > value['credit']:
+                            value['debit'] -= value['credit']
+                            value['credit'] = Decimal('0.0')
+                        else:
+                            value['credit'] -= value['debit']
+                            value['debit'] = Decimal('0.0')
                     summary_move_lines.append(SummaryMoveLine(
                         account=account_id,
                         debit=value['debit'],
