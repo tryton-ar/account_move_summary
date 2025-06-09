@@ -19,10 +19,12 @@ def register():
         move.SummaryLine,
         move.Move,
         move.RenumberSummaryMovesStart,
+        move.PrintSummaryGeneralJournalStart,
         module='account_move_summary', type_='model')
     Pool.register(
         account.RenewFiscalYear,
         move.RenumberSummaryMoves,
+        move.PrintSummaryGeneralJournal,
         module='account_move_summary', type_='wizard')
     Pool.register(
         move.SummaryGeneralJournal,

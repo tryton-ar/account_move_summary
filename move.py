@@ -11,7 +11,7 @@ from sql.functions import CharLength
 from trytond.model import ModelView, ModelSQL, Workflow, fields
 from trytond.model.exceptions import AccessError
 from trytond.modules.currency.fields import Monetary
-from trytond.wizard import Wizard, StateView, StateAction, Button
+from trytond.wizard import Wizard, StateView, StateAction, StateReport, Button
 from trytond.report import Report
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import PYSONEncoder, Eval, Bool, If
@@ -695,6 +695,45 @@ class RenumberSummaryMoves(Wizard):
         return 'end'
 
 
+class PrintSummaryGeneralJournalStart(ModelView):
+    "General Journal (Summary Moves)"
+    __name__ = 'account.print_summary_move_general_journal.start'
+
+    company = fields.Many2One('company.company', "Company", required=True)
+    fiscalyear = fields.Many2One('account.fiscalyear', "Fiscal Year",
+        domain=[('company', '=', Eval('company', -1))], required=True)
+
+    @classmethod
+    def default_company(cls):
+        return Transaction().context.get('company')
+
+    @fields.depends('company', 'fiscalyear')
+    def on_change_company(self):
+        if self.fiscalyear and self.fiscalyear.company != self.company:
+            self.fiscalyear = None
+
+
+class PrintSummaryGeneralJournal(Wizard):
+    'General Journal (Summary Moves)'
+    __name__ = 'account.print_summary_move_general_journal'
+
+    start = StateView('account.print_summary_move_general_journal.start',
+        'account_move_summary.'
+        'print_summary_move_general_journal_start_view_form', [
+            Button('Cancel', 'end', 'tryton-cancel'),
+            Button('Print', 'print_', 'tryton-print', default=True),
+            ])
+    print_ = StateReport('account.summary.move.general_journal')
+
+    def do_print_(self, action):
+        data = {
+            'company': self.start.company.id,
+            'fiscalyear': (self.start.fiscalyear and
+                self.start.fiscalyear.id or None),
+            }
+        return action, data
+
+
 class SummaryGeneralJournal(Report):
     __name__ = 'account.summary.move.general_journal'
 
@@ -702,10 +741,17 @@ class SummaryGeneralJournal(Report):
     def get_context(cls, records, header, data):
         pool = Pool()
         Company = pool.get('company.company')
+        SummaryMove = pool.get('account.summary.move')
+
+        if not records and 'fiscalyear' in data:
+            records = SummaryMove.search([
+                ('period.fiscalyear', '=', data['fiscalyear']),
+                ])
         records = sorted(records, key=lambda i: (i.post_number, i.date))
         context = Transaction().context
         report_context = super().get_context(records, header, data)
-        report_context['company'] = Company(context['company'])
+        report_context['company'] = Company(
+            data.get('company', context['company']))
         report_context['get_total_move'] = cls.get_total_move
         return report_context
 
