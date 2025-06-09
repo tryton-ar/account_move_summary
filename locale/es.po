@@ -170,6 +170,10 @@ msgctxt "field:account.summary.move.renumber.start,fiscalyear:"
 msgid "Fiscal Year"
 msgstr "Ejercicio fiscal"
 
+msgctxt "field:account.summary.move.renumber.start,last_move:"
+msgid "Last Move"
+msgstr "Último asiento"
+
 msgctxt "field:account.summary.period,period:"
 msgid "Period"
 msgstr "Período"
