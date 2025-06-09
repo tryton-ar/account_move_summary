@@ -630,6 +630,15 @@ class Move(metaclass=PoolMeta):
         super(Move, cls).__setup__()
         cls._check_modify_exclude.append('summary_move')
 
+    @classmethod
+    def copy(cls, moves, default=None):
+        if default is None:
+            default = {}
+        else:
+            default = default.copy()
+        default['summary_move'] = None
+        return super().copy(moves, default=default)
+
 
 class RenumberSummaryMovesStart(ModelView):
     '''Renumber Summary Account Moves Start'''
