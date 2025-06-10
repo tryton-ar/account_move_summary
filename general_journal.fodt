@@ -678,7 +678,7 @@
      <table:table-header-rows>
       <table:table-row table:style-name="Table4.1">
        <table:table-cell table:style-name="Table4.A1" office:value-type="string">
-        <text:p text:style-name="P11">Journal Entry: <text:placeholder text:placeholder-type="text">&lt;move.post_number or &apos;&apos;&gt;</text:placeholder></text:p>
+        <text:p text:style-name="P11">Journal Entry: <text:placeholder text:placeholder-type="text">&lt;move.number&gt;</text:placeholder></text:p>
        </table:table-cell>
        <table:table-cell table:style-name="Table4.B1" office:value-type="string">
         <text:p text:style-name="P11">Date: <text:s/><text:placeholder text:placeholder-type="text">&lt;format_date(move.date, user.language)&gt;</text:placeholder></text:p>
