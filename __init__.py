@@ -25,5 +25,6 @@ def register():
         move.PrintSummaryGeneralJournal,
         module='account_move_summary', type_='wizard')
     Pool.register(
-        move.SummaryGeneralJournal,
+        move.SummaryGeneralJournalPDF,
+        move.SummaryGeneralJournalXLS,
         module='account_move_summary', type_='report')

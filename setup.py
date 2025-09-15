@@ -85,8 +85,8 @@ setup(name='%s_%s' % (PREFIX, MODULE),
         ),
     package_data={
         'trytond.modules.%s' % MODULE: (info.get('xml', []) + [
-            'tryton.cfg', 'view/*.xml', 'locale/*.po', '*.fodt',
-            'tests/*.rst']),
+            'tryton.cfg', 'view/*.xml', 'locale/*.po', 'report/*.fodt',
+            'report/*.fods', 'tests/*.rst']),
         },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
