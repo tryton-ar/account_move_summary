@@ -771,11 +771,21 @@ class PrintSummaryGeneralJournal(Wizard):
         'account_move_summary.'
         'print_summary_move_general_journal_start_view_form', [
             Button('Cancel', 'end', 'tryton-cancel'),
-            Button('Print', 'print_', 'tryton-print', default=True),
+            Button('Print XLS', 'print_xls', 'tryton-print'),
+            Button('Print PDF', 'print_pdf', 'tryton-print', default=True),
             ])
-    print_ = StateReport('account.summary.move.general_journal')
+    print_xls = StateReport('account.summary.move.general_journal_xls')
+    print_pdf = StateReport('account.summary.move.general_journal_pdf')
 
-    def do_print_(self, action):
+    def do_print_xls(self, action):
+        data = {
+            'company': self.start.company.id,
+            'fiscalyear': (self.start.fiscalyear and
+                self.start.fiscalyear.id or None),
+            }
+        return action, data
+
+    def do_print_pdf(self, action):
         data = {
             'company': self.start.company.id,
             'fiscalyear': (self.start.fiscalyear and
@@ -784,8 +794,8 @@ class PrintSummaryGeneralJournal(Wizard):
         return action, data
 
 
-class SummaryGeneralJournal(Report):
-    __name__ = 'account.summary.move.general_journal'
+class SummaryGeneralJournalPDF(Report):
+    __name__ = 'account.summary.move.general_journal_pdf'
 
     @classmethod
     def get_context(cls, records, header, data):
@@ -812,3 +822,7 @@ class SummaryGeneralJournal(Report):
             return reduce(lambda a, b: a + b, [l.debit for l in lines])
         elif type_ == 'credit':
             return reduce(lambda a, b: a + b, [l.credit for l in lines])
+
+
+class SummaryGeneralJournalXLS(SummaryGeneralJournalPDF):
+    __name__ = 'account.summary.move.general_journal_xls'

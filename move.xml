@@ -251,17 +251,32 @@
             parent="account.menu_reporting"
             sequence="16" icon="tryton-print"/>
 
-        <!-- General Journal report -->
-        <record model="ir.action.report" id="report_summary_general_journal">
-            <field name="name">General Journal</field>
+        <!-- General Journal report (PDF) -->
+        <record model="ir.action.report" id="report_summary_general_journal_pdf">
+            <field name="name">General Journal (PDF)</field>
             <field name="model">account.summary.move</field>
-            <field name="report_name">account.summary.move.general_journal</field>
-            <field name="report">account_move_summary/general_journal.fodt</field>
+            <field name="report_name">account.summary.move.general_journal_pdf</field>
+            <field name="report">account_move_summary/report/general_journal.fodt</field>
+            <field name="template_extension">odt</field>
         </record>
-        <record model="ir.action.keyword" id="report_general_journal_keyword">
+        <record model="ir.action.keyword" id="report_summary_general_journal_pdf_keyword">
             <field name="keyword">form_print</field>
             <field name="model">account.summary.move,-1</field>
-            <field name="action" ref="report_summary_general_journal"/>
+            <field name="action" ref="report_summary_general_journal_pdf"/>
+        </record>
+
+        <!-- General Journal report (XLS) -->
+        <record model="ir.action.report" id="report_summary_general_journal_xls">
+            <field name="name">General Journal (XLS)</field>
+            <field name="model">account.summary.move</field>
+            <field name="report_name">account.summary.move.general_journal_xls</field>
+            <field name="report">account_move_summary/report/general_journal.fods</field>
+            <field name="template_extension">ods</field>
+        </record>
+        <record model="ir.action.keyword" id="report_summary_general_journal_xls_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">account.summary.move,-1</field>
+            <field name="action" ref="report_summary_general_journal_xls"/>
         </record>
 
     </data>
