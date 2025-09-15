@@ -629,7 +629,11 @@ class RenumberSummaryMovesStart(ModelView):
         domain=[('first_number', '>', 0)])
     first_move = fields.Many2One('account.summary.move', 'First Move',
         domain=[('period.fiscalyear', '=', Eval('fiscalyear', None))])
-    last_move = fields.Many2One('account.summary.move', 'Last Move',
+    last_1_move = fields.Many2One('account.summary.move', 'Last 1',
+        domain=[('period.fiscalyear', '=', Eval('fiscalyear', None))])
+    last_2_move = fields.Many2One('account.summary.move', 'Last 2',
+        domain=[('period.fiscalyear', '=', Eval('fiscalyear', None))])
+    last_3_move = fields.Many2One('account.summary.move', 'Last 3',
         domain=[('period.fiscalyear', '=', Eval('fiscalyear', None))])
 
     @staticmethod
@@ -687,7 +691,9 @@ class RenumberSummaryMoves(Wizard):
                 ])
 
         first_move = self.start.first_move
-        last_move = self.start.last_move
+        last_1_move = self.start.last_1_move
+        last_2_move = self.start.last_2_move
+        last_3_move = self.start.last_3_move
 
         to_write = []
         for move in moves_to_renumber:
@@ -705,16 +711,26 @@ class RenumberSummaryMoves(Wizard):
                     'number_next': number_next_old,
                     })
                 continue
-            if move == last_move:
+            if move in (last_1_move, last_2_move, last_3_move):
                 continue
             to_write.extend(([move], {
                 'post_number': (
                     move.period.post_summary_move_sequence_used.get()),
                 }))
-        if last_move:
-            to_write.extend(([last_move], {
+        if last_1_move:
+            to_write.extend(([last_1_move], {
                 'post_number': (
-                    last_move.period.post_summary_move_sequence_used.get()),
+                    last_1_move.period.post_summary_move_sequence_used.get()),
+                }))
+        if last_2_move:
+            to_write.extend(([last_2_move], {
+                'post_number': (
+                    last_2_move.period.post_summary_move_sequence_used.get()),
+                }))
+        if last_3_move:
+            to_write.extend(([last_3_move], {
+                'post_number': (
+                    last_3_move.period.post_summary_move_sequence_used.get()),
                 }))
         if to_write:
             SummaryMove.write(*to_write)
