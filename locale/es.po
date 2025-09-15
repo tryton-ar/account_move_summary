@@ -349,20 +349,12 @@ msgid "Description"
 msgstr "Descripción"
 
 msgctxt "report:account.summary.move.general_journal:"
-msgid "Draft"
-msgstr "Borrador"
-
-msgctxt "report:account.summary.move.general_journal:"
 msgid "General Journal"
 msgstr "Libro diario"
 
 msgctxt "report:account.summary.move.general_journal:"
 msgid "Journal Entry:"
 msgstr "Asiento:"
-
-msgctxt "report:account.summary.move.general_journal:"
-msgid "Number:"
-msgstr "Número"
 
 msgctxt "report:account.summary.move.general_journal:"
 msgid "Total"
