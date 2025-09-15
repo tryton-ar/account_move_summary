@@ -250,9 +250,13 @@ msgctxt "model:ir.action,name:act_summary_move_line_form"
 msgid "Summary Move Lines"
 msgstr "Líneas de asientos resumidos"
 
-msgctxt "model:ir.action,name:report_summary_general_journal"
-msgid "General Journal"
-msgstr "Libro diario"
+msgctxt "model:ir.action,name:report_summary_general_journal_pdf"
+msgid "General Journal (PDF)"
+msgstr "Libro diario (PDF)"
+
+msgctxt "model:ir.action,name:report_summary_general_journal_xls"
+msgid "General Journal (XLS)"
+msgstr "Libro diario (XLS)"
 
 msgctxt "model:ir.action,name:wizard_print_summary_move_general_journal"
 msgid "General Journal (Summary Moves)"
@@ -320,45 +324,169 @@ msgctxt "model:ir.ui.menu,name:menu_summary_move_renumber"
 msgid "Renumber Summary Moves"
 msgstr "Renumerar asientos resumidos"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "/"
-msgstr "/"
+msgstr ""
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "Account"
 msgstr "Cuenta"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "Company:"
 msgstr "Empresa:"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "Credit"
 msgstr "Haber"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "Date:"
 msgstr "Fecha:"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "Debit"
-msgstr "Débito"
+msgstr "Debe"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "Description"
 msgstr "Descripción"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "General Journal"
 msgstr "Libro diario"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "Journal Entry:"
 msgstr "Asiento:"
 
-msgctxt "report:account.summary.move.general_journal:"
+msgctxt "report:account.summary.move.general_journal_pdf:"
 msgid "Total"
 msgstr "Total"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "("
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid ")"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid ","
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "/"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "/for"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "00/00/0000"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "00:00:00"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "???"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Account"
+msgstr "Cuenta"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Company:"
+msgstr "Empresa:"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Credit"
+msgstr "Haber"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Date:"
+msgstr "Fecha:"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Debit"
+msgstr "Debe"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Description"
+msgstr "Descripción"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "General Journal"
+msgstr "Libro diario"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Journal Entry:"
+msgstr "Asiento:"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Página"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "Total"
+msgstr "Total"
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "company.rec_name"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "for each=\"line in move.lines\""
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "for each=\"move in records\""
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid ""
+"format_currency(get_total_move(move.lines, 'credit'), user.language, "
+"company.currency)"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid ""
+"format_currency(get_total_move(move.lines, 'debit'), user.language, "
+"company.currency)"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "format_currency(line.credit, user.language, company.currency)"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "format_currency(line.debit, user.language, company.currency)"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "format_date(move.date, user.language)"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "line.account.rec_name"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "line.description"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "move.description"
+msgstr ""
+
+msgctxt "report:account.summary.move.general_journal_xls:"
+msgid "move.post_number or ''"
+msgstr ""
 
 msgctxt "selection:account.summary,state:"
 msgid "Calculated"
@@ -428,9 +556,14 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 msgctxt ""
-"wizard_button:account.print_summary_move_general_journal,start,print_:"
-msgid "Print"
-msgstr "Imprimir"
+"wizard_button:account.print_summary_move_general_journal,start,print_pdf:"
+msgid "Print PDF"
+msgstr "Imprimir PDF"
+
+msgctxt ""
+"wizard_button:account.print_summary_move_general_journal,start,print_xls:"
+msgid "Print XLS"
+msgstr "Imprimir XLS"
 
 msgctxt "wizard_button:account.summary.move.renumber,start,end:"
 msgid "Cancel"
