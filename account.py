@@ -46,7 +46,7 @@ class Period(metaclass=PoolMeta):
                 if not vals.get('post_summary_move_sequence'):
                     vals['post_summary_move_sequence'] = (
                         fiscalyear.post_summary_move_sequence.id)
-        return super(Period, cls).create(vlist)
+        return super().create(vlist)
 
     @classmethod
     def write(cls, *args):
@@ -68,7 +68,7 @@ class Period(metaclass=PoolMeta):
                                     '.msg_change_period_post_move_sequence',
                                     period=period.rec_name))
             args.extend((periods, values))
-        super(Period, cls).write(*args)
+        super().write(*args)
 
     @property
     def post_summary_move_sequence_used(self):

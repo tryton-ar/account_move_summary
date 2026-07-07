@@ -246,7 +246,7 @@ class Summary(Workflow, ModelSQL, ModelView):
                 raise AccessError(
                     gettext('account_move_summary.msg_delete_posted_summary',
                         summary=summary.rec_name))
-        super(Summary, cls).delete(summaries)
+        super().delete(summaries)
 
 
 class SummaryPeriod(ModelSQL):
@@ -299,7 +299,7 @@ class SummaryMove(ModelSQL, ModelView):
 
     @classmethod
     def __setup__(cls):
-        super(SummaryMove, cls).__setup__()
+        super().__setup__()
         cls._check_modify_exclude = ['post_number', 'lines']
         cls._order.insert(0, ('date', 'DESC'))
         cls._order.insert(1, ('number', 'DESC'))
@@ -351,7 +351,7 @@ class SummaryMove(ModelSQL, ModelView):
                     if sequence:
                         vals['number'] = sequence.get()
 
-        moves = super(SummaryMove, cls).create(vlist)
+        moves = super().create(vlist)
         cls.validate_move(moves)
         return moves
 
@@ -606,7 +606,7 @@ class Move(metaclass=PoolMeta):
 
     @classmethod
     def __setup__(cls):
-        super(Move, cls).__setup__()
+        super().__setup__()
         cls._check_modify_exclude.append('summary_move')
 
     @classmethod
