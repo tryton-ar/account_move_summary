@@ -51,8 +51,7 @@
 
         <record model="ir.rule.group" id="rule_group_summary_move_companies">
             <field name="name">User in companies</field>
-            <field name="model"
-                search="[('model', '=', 'account.summary.move')]"/>
+            <field name="model">account.summary.move</field>
             <field name="global_p" eval="True"/>
         </record>
         <record model="ir.rule" id="rule_summary_move_companies">
@@ -92,8 +91,7 @@
 
         <record model="ir.rule.group" id="rule_group_summary_move_line_companies">
             <field name="name">User in companies</field>
-            <field name="model"
-                search="[('model', '=', 'account.summary.move.line')]"/>
+            <field name="model">account.summary.move.line</field>
             <field name="global_p" eval="True"/>
         </record>
         <record model="ir.rule" id="rule_summary_move_line_companies">
@@ -162,26 +160,22 @@
         <record model="ir.model.button" id="summary_draft_button">
             <field name="name">draft</field>
             <field name="string">Draft</field>
-            <field name="model"
-                search="[('model', '=', 'account.summary')]"/>
+            <field name="model">account.summary</field>
         </record>
         <record model="ir.model.button" id="summary_compute_button">
             <field name="name">compute</field>
             <field name="string">Compute</field>
-            <field name="model"
-                search="[('model', '=', 'account.summary')]"/>
+            <field name="model">account.summary</field>
         </record>
         <record model="ir.model.button" id="summary_post_button">
             <field name="name">post</field>
             <field name="string">Post</field>
-            <field name="model"
-                search="[('model', '=', 'account.summary')]"/>
+            <field name="model">account.summary</field>
         </record>
 
         <record model="ir.rule.group" id="rule_group_summary_companies">
             <field name="name">User in companies</field>
-            <field name="model"
-                search="[('model', '=', 'account.summary')]"/>
+            <field name="model">account.summary</field>
             <field name="global_p" eval="True"/>
         </record>
         <record model="ir.rule" id="rule_summary_companies">
@@ -213,7 +207,7 @@
 
         <!-- Summary moves access -->
         <record model="ir.model.access" id="access_summary_move">
-            <field name="model" search="[('model', '=', 'account.summary.move')]"/>
+            <field name="model">account.summary.move</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
