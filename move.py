@@ -300,7 +300,7 @@ class SummaryMove(ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super().__setup__()
-        cls._check_modify_exclude = ['post_number', 'lines']
+        cls._check_modify_exclude = {'post_number', 'lines'}
         cls._order.insert(0, ('date', 'DESC'))
         cls._order.insert(1, ('number', 'DESC'))
 
@@ -607,7 +607,7 @@ class Move(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super().__setup__()
-        cls._check_modify_exclude.append('summary_move')
+        cls._check_modify_exclude.add('summary_move')
 
     @classmethod
     def copy(cls, moves, default=None):
